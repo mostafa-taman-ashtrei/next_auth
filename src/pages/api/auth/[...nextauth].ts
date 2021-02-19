@@ -1,6 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
+import Adapters from 'next-auth/adapters';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
     NextAuth(req, res, {
@@ -19,5 +23,6 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
             jwt: true,
             maxAge: 60 * 60 * 24 * 30, // 30 days
         },
+        adapter: Adapters.Prisma.Adapter({ prisma }),
     });
 };
